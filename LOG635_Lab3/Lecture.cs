@@ -12,8 +12,8 @@ namespace LOG635_Lab3
     {
         static void Main(string[] args)
         {
-            string path = @"C:\Users\Mart\Documents\GitHub\WhatsYourAddiction\Dataset.csv";
-            string pathOut = @"C:\Users\Mart\Documents\GitHub\WhatsYourAddiction\output.txt";
+            string path = @"C:\Users\Mart\Documents\GitHub\WhatsYourAddiction\Evaluations.csv";
+            string pathOut = @"C:\Users\Mart\Documents\GitHub\WhatsYourAddiction\Evaluationsoutput.txt";
 
             String input = File.ReadAllText(path);
             Char splitAt = ',';
@@ -384,6 +384,8 @@ namespace LOG635_Lab3
         // Zi=Xi−min(X)/ max(X)−min(X)
         static public float Normal(String toNorm, float min, float max)
         {
+            if (toNorm == "")
+                toNorm = "0";
             float x = float.Parse(toNorm);
             x = (x - min) / (max - min);
 
