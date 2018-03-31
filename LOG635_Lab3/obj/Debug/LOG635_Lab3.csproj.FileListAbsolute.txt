@@ -1,0 +1,12 @@
+C:\Users\Mart\Documents\ETS\LOG635_Lab3\LOG635_Lab3\bin\Debug\LOG635_Lab3.exe.config
+C:\Users\Mart\Documents\ETS\LOG635_Lab3\LOG635_Lab3\bin\Debug\LOG635_Lab3.exe
+C:\Users\Mart\Documents\ETS\LOG635_Lab3\LOG635_Lab3\bin\Debug\LOG635_Lab3.pdb
+C:\Users\Mart\Documents\ETS\LOG635_Lab3\LOG635_Lab3\obj\Debug\LOG635_Lab3.csprojResolveAssemblyReference.cache
+C:\Users\Mart\Documents\ETS\LOG635_Lab3\LOG635_Lab3\obj\Debug\LOG635_Lab3.exe
+C:\Users\Mart\Documents\ETS\LOG635_Lab3\LOG635_Lab3\obj\Debug\LOG635_Lab3.pdb
+C:\Users\Mart\Documents\GitHub\WhatsYourAddiction\LOG635_Lab3\bin\Debug\LOG635_Lab3.exe.config
+C:\Users\Mart\Documents\GitHub\WhatsYourAddiction\LOG635_Lab3\obj\Debug\LOG635_Lab3.exe
+C:\Users\Mart\Documents\GitHub\WhatsYourAddiction\LOG635_Lab3\obj\Debug\LOG635_Lab3.pdb
+C:\Users\Mart\Documents\GitHub\WhatsYourAddiction\LOG635_Lab3\bin\Debug\LOG635_Lab3.exe
+C:\Users\Mart\Documents\GitHub\WhatsYourAddiction\LOG635_Lab3\bin\Debug\LOG635_Lab3.pdb
+C:\Users\Mart\Documents\GitHub\WhatsYourAddiction\LOG635_Lab3\obj\Debug\LOG635_Lab3.csprojResolveAssemblyReference.cache

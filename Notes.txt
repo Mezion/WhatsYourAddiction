@@ -1,0 +1,47 @@
+//////////////////////////////////////////////////////////////////////////////////////////
+/*
+//Array de 32 colonnes x X ranger
+using (var reader = new StreamReader(@"C:\Users\Mart\Desktop\LOG635_lab3\Dataset.csv"))
+{
+    List<string> listA = new List<string>();
+    List<string> listB = new List<string>();
+
+    while (!reader.EndOfStream)
+    {
+        var line = reader.ReadLine();
+        var values = line.Split(',');
+
+        Console.WriteLine(values[0]);
+        Console.WriteLine(values[1]);
+
+        listA.Add(values[0]);
+        listB.Add(values[1]);
+
+    }
+ }
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+String input = File.ReadAllText(@"C:\Users\Mart\Desktop\LOG635_lab3\Dataset.csv");
+Char splitAt = ',';
+//String pattern = @"(,\n)";  //|\n
+
+int i = 0, j = 0;
+string[,] result = new string[997, 32];
+
+foreach (var row in input.Split('\n'))          //ROW //Regex.Split(input, pattern))
+{
+j = 0;
+foreach (var col in row.Trim().Split(','))    //COLUMN
+{
+    result[i, j] = col.Trim();
+    Console.WriteLine(result[i, j]);
+    j++;
+}
+i++;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+*/
