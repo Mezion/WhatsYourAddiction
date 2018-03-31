@@ -12,8 +12,8 @@ namespace LOG635_Lab3
     {
         static void Main(string[] args)
         {
-            string path = @"C:\Users\Mart\Documents\GitHub\WhatsYourAddiction\Evaluations.csv";
-            string pathOut = @"C:\Users\Mart\Documents\GitHub\WhatsYourAddiction\Evaluationsoutput.txt";
+            string path = @"C:\Users\Mart\Documents\GitHub\WhatsYourAddiction\Dataset.csv";
+            string pathOut = @"C:\Users\Mart\Documents\GitHub\WhatsYourAddiction\output.txt";
 
             String input = File.ReadAllText(path);
             Char splitAt = ',';
