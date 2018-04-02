@@ -44,6 +44,7 @@ namespace Log635Lab03_Winform
                 return;
             }
 
+            Logger.Show();
             FormData formData = new FormData(txtFile.Text);
             formData.Show();
         }

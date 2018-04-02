@@ -25,8 +25,8 @@ namespace Log635Lab03_Winform
             _csvFile = file;
             _drugDataset = new DrugDataset();
 
-            FillCombobox();
             CreateDataset();
+            FillCombobox();
         }
 
         private void FillCombobox()
@@ -36,8 +36,19 @@ namespace Log635Lab03_Winform
         
         private void CreateDataset()
         {
-            _drugDataset.CreateDataset(File.ReadAllLines(_csvFile).Select(x => x.Split(',')).ToList());
-            dataGridView1.DataSource = _drugDataset.DataTable;
+            var lines = File.ReadAllLines(_csvFile).Select(x => x.Split(',')).ToList();
+            Logger.LogMessage($"All lines were read from file ${_csvFile}");
+
+            try
+            {
+                _drugDataset.CreateDataset(lines);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError($"Error happened while creating Dataset: ${ex.Message}");
+            }
+            
+            dataGridView1.DataSource = _drugDataset.DrugDataTable;
         }
 
         private void btnCleanColumn_Click(object sender, EventArgs e)
@@ -48,6 +59,7 @@ namespace Log635Lab03_Winform
                 return;
             }
 
+            Logger.LogMessage($"Request clean column: {cmbColumns.Text}");
             _drugDataset.CleanColumn(cmbColumns.Text);
         }
 

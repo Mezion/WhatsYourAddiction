@@ -9,55 +9,39 @@ namespace Log635Lab03_Winform
 {
     public class DrugDataset
     {
-        public DataTable DataTable { get; set; }
-
-        public List<string> Columns => new List<string>
-        {
-            "Id",
-            "Age",
-            "Genre",
-            "Education",
-            "Pays",
-            "Ethnicité",
-            "Neuroticisme",
-            "Extraversion",
-            "Ouverture",
-            "Agréabilité",
-            "Conscienciosité",
-            "Impulsivité",
-            "Recherche de sensations",
-            "Alcohol",
-            "Amphetamines",
-            "Amyl nitrite",
-            "Benzodiazepine",
-            "Caffeine",
-            "Cannabis",
-            "Chocolate",
-            "Cocaine",
-            "Crack",
-            "Ecstasy",
-            "Heroin",
-            "Ketamine",
-            "Legal highs",
-            "LSD",
-            "Methadone",
-            "Magic mushrooms",
-            "Nicotine",
-            "Semeron",
-            "Volatile substance abuse",
-            "INVALID COLUMN"
-        };
+        public DataTable DrugDataTable { get; set; }
+        public List<string> Columns { get; set; }
 
         public void CreateDataset(List<string[]> rows)
         {
-            DataTable = new DataTable();
-            Columns.ForEach(x => DataTable.Columns.Add(x));
-            rows.ForEach(x => DataTable.Rows.Add(x));
+            DrugDataTable = new DataTable();
+
+            var columnCount = rows.Max(r => r.Length);
+
+            Columns = rows.ElementAt(0)?.ToList();
+
+            for (int i = Columns?.Count ?? 0; i < columnCount; i++)
+            {
+                Columns?.Add($"{i}?");
+            }
+
+            Columns?.ForEach(x => DrugDataTable.Columns.Add(x));
+            rows.RemoveAt(0);
+            rows.ForEach(x => DrugDataTable.Rows.Add(x));
+
+            Logger.LogMessage($"Dataset created successfully");
         }
 
         public void CleanAllColumns()
         {
+            Logger.LogMessage("Start cleaning all columns");
+            
+            foreach (var column in Columns)
+            {
+                CleanColumn(column);
+            }
 
+            Logger.LogMessage("Cleaned all columns successfully");
         }
 
         public void CleanColumn(string columnName)
@@ -67,7 +51,32 @@ namespace Log635Lab03_Winform
                 return;
             }
 
+            Logger.LogMessage($"\nCreate temporary data list");
+            List<string> tempList = new List<string>();
+            
+            foreach (DataRow row in DrugDataTable.Rows)
+            {
+                tempList.Add(row[columnName].ToString());
+            }
 
+            Logger.LogMessage($"Create DataCleaner, ready to clean {tempList.Count} rows");
+
+            DataCleaner dataCleaner = new DataCleaner(tempList, columnName);
+            var cleanedData = dataCleaner.Clean();
+
+            for (int i = 0; i < cleanedData.Count; i++)
+            {
+                try
+                {
+                    DrugDataTable.Rows[i][columnName] = cleanedData[i];
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(ex.Message);
+                }
+            }
+
+            Logger.LogMessage($"Data has been updated in Dataset successfully\n");
         }
     }
 }
