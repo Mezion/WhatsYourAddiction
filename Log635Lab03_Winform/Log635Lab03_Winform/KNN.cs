@@ -95,10 +95,10 @@ namespace Log635Lab03_Winform
 
             //List<double> instance2Classify = new List<double> { 12, 11, 500 };
 
-            foreach (DataRow row in DrugDataTable.Rows)
-            {
-                tempList.Add(row[columnName].ToString());
-            }
+            //foreach (DataRow row in DrugDataTable.Rows)
+            //{
+            //    tempList.Add(row[columnName].ToString());
+            //}
 
             List<double> instance2Classify = new List<double> { 12, 11, 500 };
             string result = examplekNN.Classify(instance2Classify);
