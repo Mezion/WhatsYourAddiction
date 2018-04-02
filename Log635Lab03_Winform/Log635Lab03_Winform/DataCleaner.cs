@@ -23,8 +23,6 @@ namespace Log635Lab03_Winform
 
         public List<string> TrimColumn()
         {
-            Logger.LogMessage($"trim column: {_column}");
-
             for (int i = 0; i < _data.Count; i++)
             {
                 _data[i] = _data[i].TrimStart().TrimEnd().Trim();

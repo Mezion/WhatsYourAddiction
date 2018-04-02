@@ -20,6 +20,11 @@ namespace Log635Lab03_Winform
 
             Columns = rows.ElementAt(0)?.ToList();
 
+            for (int i = 0; i < Columns.Count; i++)
+            {
+                Columns[i] = Columns[i].Replace(" ", "");
+            }
+
             for (int i = Columns?.Count ?? 0; i < columnCount; i++)
             {
                 Columns?.Add($"{i}?");
@@ -31,7 +36,7 @@ namespace Log635Lab03_Winform
 
             TrimDataset();
 
-            Logger.LogMessage($"Dataset created successfully");
+            //Logger.LogMessage($"Dataset created successfully");
         }
 
         private void TrimDataset()
@@ -107,6 +112,26 @@ namespace Log635Lab03_Winform
             foreach (DataRow row in DrugDataTable.Rows)
             {
                 tempList.Add(row[columnName].ToString());
+            }
+
+            return tempList;
+        }
+
+        public List<string> GetTrainingRows(string columnName)
+        {
+            if (!Columns.Contains(columnName))
+            {
+                return new List<string>();
+            }
+
+            List<string> tempList = new List<string>();
+
+            int i = 0;
+            foreach (DataRow row in DrugDataTable.Rows)
+            {
+                if (i % 2 == 0)
+                    tempList.Add(row[columnName].ToString());
+                i++;
             }
 
             return tempList;

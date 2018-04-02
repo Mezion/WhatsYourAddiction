@@ -17,39 +17,25 @@ namespace Log635Lab03_Winform
     public class TreeNode
     {
         public string Column { get; set; }
-        public string PredicateDescription { get; set; }
+        public string TrueFilterExpression { get; set; }
+        public string FalseFilterExpression { get; set; }
         public Predicate<double> Predicate { get; set; }
         public TreeNode ChildTrue { get; set; }
         public TreeNode ChildFalse { get; set; }
+        public TreeNode Parent { get; set; }
     }
 
     public class DecisionTree
     {
-        private List<string> _remainingColumns;
-        private List<string> _forbiddenColumns = new List<string>() { "Id"};
-        private List<EvaluatedColumnPredicate> _evaluatedColumnPredicates = new List<EvaluatedColumnPredicate>();
+        private FormTree _treeForm = new FormTree();
 
-
-        private struct Combinaison
-        {
-            public double Value { get; set; }
-            public double Result { get; set; }
-        }
-
-        private struct EntropieCalculation
-        {
-            public string ColumnName { get; set; }
-            public Dictionary<Combinaison, int> Repetitions { get; set; }
-            public Dictionary<Combinaison, double> LP { get; set; }
-            public double UP { get; set; }
-            public double UH { get; set; }
-            public double Entropie { get; set; }
-        }
-
-        private DrugDataset _dataset;
+        private readonly List<string> _remainingColumns;
+        private readonly List<string> _forbiddenColumns = new List<string>() {"Id", "Nicotine"};
+        private readonly DrugDataset _dataset;
 
         public DecisionTree(DrugDataset dataset)
         {
+            _treeForm.Show();
             _dataset = dataset;
             _remainingColumns = _dataset.Columns.Select(c => c).ToList();
 
@@ -60,21 +46,37 @@ namespace Log635Lab03_Winform
         {
             Logger.LogWarning("\nStart building decision tree");
 
-            while (CreateNode() != null)
-            {
-                
-            }
-
-            ;
+            TreeNode root = CreateNode(new List<EvaluatedColumnPredicate>(), _dataset);
+            _treeForm.TreePanel.Root = root;
         }
 
-        private TreeNode CreateNode()
+        private DrugDataset CreateFilteredDataset(DrugDataset fromDataset, string filterExpression)
         {
-            var results = _dataset.GetRows("Nicotine").Select(c => double.Parse(c)).ToList();
+            var dataRows = fromDataset.DrugDataTable.Select(filterExpression);
+
+            var rows = new List<string[]>();
+
+            rows.Add(_dataset.Columns.ToArray());
+
+            foreach (var dataRow in dataRows)
+            {
+                rows.Add(dataRow.ItemArray.Select(i => i.ToString()).ToArray());
+            }
+
+            var newDataset = new DrugDataset();
+            newDataset.CreateDataset(rows);
+
+            return newDataset;
+        }
+
+        private TreeNode CreateNode(List<EvaluatedColumnPredicate> evaluatedParent, DrugDataset dataset)
+        {
+            var results = dataset.GetTrainingRows("Nicotine").Select(c => double.Parse(c)).ToList();
             var resultPredicateRange = DeterminePredicateRange(results);
 
             var nodeCandidates = new Tuple<double, TreeNode>(double.MaxValue, null);
             EvaluatedColumnPredicate evaluationCandidate = new EvaluatedColumnPredicate();
+            double entropieCandidate = -1;
 
             _remainingColumns.ForEach(column =>
             {
@@ -83,7 +85,7 @@ namespace Log635Lab03_Winform
                     return;
                 }
 
-                var values = _dataset.GetRows(column).Select(c => double.Parse(c)).ToList();
+                var values = dataset.GetTrainingRows(column).Select(c => double.Parse(c)).ToList();
                 var valuePredicateRange = DeterminePredicateRange(values);
 
                 for (int i = 0; i < resultPredicateRange.Item1; i++)
@@ -93,36 +95,55 @@ namespace Log635Lab03_Winform
                         var valuePredicate = new Predicate<double>(d => d >= j * valuePredicateRange.Item2 && d < (j + 1) * valuePredicateRange.Item2);
                         var resultPredicate = new Predicate<double>(d => d >= i * resultPredicateRange.Item2 && d < (i + 1) * resultPredicateRange.Item2);
 
-                        var predicateDescription = $"d >= {j * valuePredicateRange.Item2} && d < {(j + 1) * valuePredicateRange.Item2}";
+                        var minExp = j * valuePredicateRange.Item2 == 0 ? "0.0" : (j * valuePredicateRange.Item2).ToString();
+                        var maxExp = (j + 1) * valuePredicateRange.Item2 == 1
+                            ? "1.0"
+                            : ((j + 1) * valuePredicateRange.Item2).ToString();
 
-                        var evaluation = new EvaluatedColumnPredicate{ Column = column, PredicateDescription = predicateDescription};
+                        var trueFilterExpression = $"{column} >= {minExp} AND {column} < {maxExp}";
+                        var falseFilterExpression = $"NOT ({column} >= {minExp} AND {column} < {maxExp})";
 
-                        if (_evaluatedColumnPredicates.Contains(evaluation))
+                        var evaluation = new EvaluatedColumnPredicate{ Column = column, PredicateDescription = trueFilterExpression};
+
+                        if (evaluatedParent.Contains(evaluation))
                         {
                             continue;
                         }
 
                         var entropie = CalculateEntropie(results, values, valuePredicate, resultPredicate);
 
+                        if (entropie < 0 || entropie > 1)
+                            Logger.LogError($"Calculated entropie on column {column} with predicate {trueFilterExpression} is not valid => {entropie}");
+
                         if (entropie < nodeCandidates.Item1)
                         {
                             evaluationCandidate = evaluation;
+                            entropieCandidate = entropie;
                             nodeCandidates = new Tuple<double, TreeNode>(entropie, new TreeNode
                             {
                                 ChildFalse = null,
                                 ChildTrue = null,
                                 Column = column,
                                 Predicate = valuePredicate,
-                                PredicateDescription = predicateDescription
+                                TrueFilterExpression = trueFilterExpression,
+                                FalseFilterExpression = falseFilterExpression
                             });
                         }
                     }
                 }
             });
 
-            _evaluatedColumnPredicates.Add(evaluationCandidate);
-            Logger.LogMessage($"Treenode created with column {nodeCandidates.Item2?.Column} and predicate = {nodeCandidates.Item2?.PredicateDescription}");
 
+            evaluatedParent.Add(evaluationCandidate);
+
+            if (nodeCandidates.Item2 != null)
+            {
+                Logger.LogMessage($"Treenode created with column {nodeCandidates.Item2?.Column}, entropie = {entropieCandidate}, predicate = {nodeCandidates.Item2?.TrueFilterExpression}");
+
+                nodeCandidates.Item2.ChildFalse = CreateNode(evaluatedParent, CreateFilteredDataset(dataset, nodeCandidates.Item2.TrueFilterExpression));
+                nodeCandidates.Item2.ChildTrue = CreateNode(evaluatedParent, CreateFilteredDataset(dataset, nodeCandidates.Item2.FalseFilterExpression));
+            }
+            
             return nodeCandidates.Item2;
         }
 
