@@ -102,18 +102,13 @@ namespace Log635Lab03_Winform
         private void btnDecisionTree_Click(object sender, EventArgs e)
         {
             btnCleanAll_Click(sender, e);
-            DecisionTree decisionTree = new DecisionTree(_drugDataset.DrugDataTable);
+            DecisionTree decisionTree = new DecisionTree(_drugDataset);
         }
 
         private void btnKNN_Click(object sender, EventArgs e)
         {
             btnCleanAll_Click(sender, e);
-            KNN knn = new KNN(_drugDataset.DrugDataTable);
-        }
-
-        private void btnStat_Click_1(object sender, EventArgs e)
-        {
-
+            KNN knn = new KNN(_drugDataset);
         }
     }
 }

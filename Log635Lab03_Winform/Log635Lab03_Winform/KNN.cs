@@ -9,11 +9,11 @@ namespace Log635Lab03_Winform
 {
     public class KNN
     {
-        private DataTable _dataTable;
+        private DrugDataset _dataset;
 
-        public KNN(DataTable dataTable)
+        public KNN(DrugDataset dataset)
         {
-            _dataTable = dataTable;
+            _dataset = dataset;
         }
 
         public void Train()
