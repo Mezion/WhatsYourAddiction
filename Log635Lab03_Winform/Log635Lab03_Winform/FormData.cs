@@ -110,5 +110,10 @@ namespace Log635Lab03_Winform
             btnCleanAll_Click(sender, e);
             KNN knn = new KNN(_drugDataset.DrugDataTable);
         }
+
+        private void btnStat_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

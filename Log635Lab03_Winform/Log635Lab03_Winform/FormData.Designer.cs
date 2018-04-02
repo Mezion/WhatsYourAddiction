@@ -31,7 +31,6 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
@@ -47,6 +46,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnDecisionTree = new System.Windows.Forms.Button();
             this.btnKNN = new System.Windows.Forms.Button();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -95,13 +95,6 @@
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(1162, 70);
             this.flowLayoutPanel1.TabIndex = 1;
-            // 
-            // flowLayoutPanel2
-            // 
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 634);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(200, 14);
-            this.flowLayoutPanel2.TabIndex = 0;
             // 
             // flowLayoutPanel3
             // 
@@ -157,6 +150,7 @@
             this.btnCleanColumn.TabIndex = 1;
             this.btnCleanColumn.Text = "Nettoyer la colonne";
             this.btnCleanColumn.UseVisualStyleBackColor = true;
+            this.btnCleanColumn.Click += new System.EventHandler(this.btnCleanColumn_Click);
             // 
             // btnCleanAll
             // 
@@ -166,6 +160,7 @@
             this.btnCleanAll.TabIndex = 4;
             this.btnCleanAll.Text = "Tout nettoyer";
             this.btnCleanAll.UseVisualStyleBackColor = true;
+            this.btnCleanAll.Click += new System.EventHandler(this.btnCleanAll_Click);
             // 
             // btnShowColumn
             // 
@@ -175,6 +170,7 @@
             this.btnShowColumn.TabIndex = 6;
             this.btnShowColumn.Text = "Afficher";
             this.btnShowColumn.UseVisualStyleBackColor = true;
+            this.btnShowColumn.Click += new System.EventHandler(this.btnShowColumn_Click);
             // 
             // btnShowAll
             // 
@@ -184,6 +180,7 @@
             this.btnShowAll.TabIndex = 7;
             this.btnShowAll.Text = "Tout Afficher";
             this.btnShowAll.UseVisualStyleBackColor = true;
+            this.btnShowAll.Click += new System.EventHandler(this.btnShowAll_Click);
             // 
             // btnRemoveAll
             // 
@@ -193,6 +190,7 @@
             this.btnRemoveAll.TabIndex = 8;
             this.btnRemoveAll.Text = "Rien Afficher";
             this.btnRemoveAll.UseVisualStyleBackColor = true;
+            this.btnRemoveAll.Click += new System.EventHandler(this.btnRemoveAll_Click);
             // 
             // btnStat
             // 
@@ -202,6 +200,7 @@
             this.btnStat.TabIndex = 9;
             this.btnStat.Text = "Statistiques";
             this.btnStat.UseVisualStyleBackColor = true;
+            this.btnStat.Click += new System.EventHandler(this.btnStat_Click);
             // 
             // flowLayoutPanel4
             // 
@@ -253,6 +252,13 @@
             this.btnKNN.Text = "KNN";
             this.btnKNN.UseVisualStyleBackColor = true;
             this.btnKNN.Click += new System.EventHandler(this.btnKNN_Click);
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 634);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(200, 14);
+            this.flowLayoutPanel2.TabIndex = 0;
             // 
             // FormData
             // 
