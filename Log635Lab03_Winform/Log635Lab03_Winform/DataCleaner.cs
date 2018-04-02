@@ -8,25 +8,29 @@ using System.Threading.Tasks;
 
 namespace Log635Lab03_Winform
 {
+
     public class DataCleaner
     {
         private string _column;
-
-        private enum DataType
-        {
-            None,
-            Normalized,
-            Numeric,
-            NumericPercent,
-            StringCategory
-        }
-
+        
         private List<string> _data;
 
         public DataCleaner(List<string> data, string column)
         {
             _data = data;
             _column = column;
+        }
+
+        public List<string> TrimColumn()
+        {
+            Logger.LogMessage($"trim column: {_column}");
+
+            for (int i = 0; i < _data.Count; i++)
+            {
+                _data[i] = _data[i].TrimStart().TrimEnd().Trim();
+            }
+
+            return _data;
         }
 
         public List<string> Clean()
@@ -42,7 +46,7 @@ namespace Log635Lab03_Winform
 
             while (type != DataType.Normalized)
             {
-                type = DetectDataType();
+                type = DataHelper.DetermineDataType(_data);
                 Logger.LogWarning($"Detected column data type is {type.ToString()}");
 
                 CleanType(type);
@@ -51,30 +55,6 @@ namespace Log635Lab03_Winform
             Logger.LogMessage($"Column cleaned successfully");
 
             return _data;
-        }
-
-        private DataType DetectDataType()
-        {
-            var regPercent = new Regex(@"^[\d\.\s]+%$");
-            var regNumeric = new Regex(@"^[\d\.]+$");
-            var regNormalized = new Regex(@"^0.\d+|1|0$");
-
-            if (_data.All(r => regNormalized.IsMatch(r)))
-            {
-                return DataType.Normalized;
-            }
-
-            if (_data.All(r => regPercent.IsMatch(r)))
-            {
-                return DataType.NumericPercent;
-            }
-
-            if (_data.All(r => regNumeric.IsMatch(r)))
-            {
-                return DataType.Numeric;
-            }
-
-            return DataType.StringCategory;
         }
 
         private void CleanType(DataType type)

@@ -29,9 +29,31 @@ namespace Log635Lab03_Winform
             rows.RemoveAt(0);
             rows.ForEach(x => DrugDataTable.Rows.Add(x));
 
+            TrimDataset();
+
             Logger.LogMessage($"Dataset created successfully");
         }
 
+        private void TrimDataset()
+        {
+            Columns.ForEach(column =>
+            {
+                var cleaner = new DataCleaner(GetRows(column), column);
+                var trimmedData = cleaner.TrimColumn();
+                for (int i = 0; i < trimmedData.Count; i++)
+                {
+                    try
+                    {
+                        DrugDataTable.Rows[i][column] = trimmedData[i];
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogError(ex.Message);
+                    }
+                }
+            });
+        }
+        
         public void CleanAllColumns()
         {
             Logger.LogMessage("Start cleaning all columns");
