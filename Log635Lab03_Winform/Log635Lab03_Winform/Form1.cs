@@ -17,6 +17,8 @@ namespace Log635Lab03_Winform
         {
             InitializeComponent();
             txtFile.Text = @"G:\workspace\WhatsYourAddiction\Dataset.csv";
+            
+            Logger.Show();
         }
 
         private void BtnSearch_Click(object sender, EventArgs e)
@@ -44,7 +46,6 @@ namespace Log635Lab03_Winform
                 return;
             }
 
-            Logger.Show();
             FormData formData = new FormData(txtFile.Text);
             formData.Show();
         }
