@@ -138,7 +138,7 @@ namespace Log635Lab03_Winform
 
             var distinctCategories = _data.Distinct().ToList();
 
-            Logger.LogWarning($"{distinctCategories.Count()} categories detected:\n   - {string.Join("\n   -", distinctCategories)}");
+            Logger.LogWarning($"{distinctCategories.Count()} categories detected:\n   -{string.Join("\n   -", distinctCategories)}");
 
             Dictionary<string, double> values = new Dictionary<string, double>();
             double range = distinctCategories.Count > 0 ? 1 / (double)distinctCategories.Count: 0;

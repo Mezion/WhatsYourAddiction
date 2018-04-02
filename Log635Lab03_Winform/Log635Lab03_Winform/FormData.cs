@@ -72,7 +72,7 @@ namespace Log635Lab03_Winform
         {
             foreach (DataGridViewColumn column in dataGridView1.Columns)
             {
-                column.Visible = column.Name == cmbColumns.Text;
+                column.Visible = column.Visible || column.Name == cmbColumns.Text;
             }
         }
 
@@ -81,6 +81,14 @@ namespace Log635Lab03_Winform
             foreach (DataGridViewColumn column in dataGridView1.Columns)
             {
                 column.Visible = true;
+            }
+        }
+
+        private void btnRemoveAll_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewColumn column in dataGridView1.Columns)
+            {
+                column.Visible = false;
             }
         }
     }

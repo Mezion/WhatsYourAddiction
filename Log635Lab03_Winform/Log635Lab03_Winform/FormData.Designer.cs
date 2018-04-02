@@ -38,6 +38,7 @@
             this.btnCleanAll = new System.Windows.Forms.Button();
             this.btnShowColumn = new System.Windows.Forms.Button();
             this.btnShowAll = new System.Windows.Forms.Button();
+            this.btnRemoveAll = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -52,7 +53,7 @@
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(1031, 498);
+            this.dataGridView1.Size = new System.Drawing.Size(1219, 549);
             this.dataGridView1.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -67,7 +68,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1037, 539);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1225, 590);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // flowLayoutPanel1
@@ -80,9 +81,10 @@
             this.flowLayoutPanel1.Controls.Add(this.btnCleanAll);
             this.flowLayoutPanel1.Controls.Add(this.btnShowColumn);
             this.flowLayoutPanel1.Controls.Add(this.btnShowAll);
+            this.flowLayoutPanel1.Controls.Add(this.btnRemoveAll);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(953, 29);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1051, 29);
             this.flowLayoutPanel1.TabIndex = 1;
             // 
             // panel1
@@ -154,11 +156,21 @@
             this.btnShowAll.UseVisualStyleBackColor = true;
             this.btnShowAll.Click += new System.EventHandler(this.btnShowAll_Click);
             // 
+            // btnRemoveAll
+            // 
+            this.btnRemoveAll.Location = new System.Drawing.Point(956, 3);
+            this.btnRemoveAll.Name = "btnRemoveAll";
+            this.btnRemoveAll.Size = new System.Drawing.Size(92, 23);
+            this.btnRemoveAll.TabIndex = 8;
+            this.btnRemoveAll.Text = "Rien Afficher";
+            this.btnRemoveAll.UseVisualStyleBackColor = true;
+            this.btnRemoveAll.Click += new System.EventHandler(this.btnRemoveAll_Click);
+            // 
             // FormData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1037, 539);
+            this.ClientSize = new System.Drawing.Size(1225, 590);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "FormData";
             this.Text = "FormData";
@@ -185,5 +197,6 @@
         private System.Windows.Forms.Button btnCleanAll;
         private System.Windows.Forms.Button btnShowColumn;
         private System.Windows.Forms.Button btnShowAll;
+        private System.Windows.Forms.Button btnRemoveAll;
     }
 }
