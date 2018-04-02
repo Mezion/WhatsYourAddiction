@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-//////////////////////////////////////////////////////////////////////
 using System.IO;
 
-namespace Log635Lab03_Winform
+namespace LOG635_Lab3
 {
     //extension method to aid in algorithm implementation
     public static class Extensions
@@ -72,48 +70,13 @@ namespace Log635Lab03_Winform
         }
     }
 
-    public class KNN
+    class KNN
     {
-        private DrugDataset _dataset;
-
-        //////////////////////////////////////////////////////////////////////
-        //private members
-        private Dictionary<List<double>, string> dataSet = new Dictionary<List<double>, string>();
-        private List<double> originalStatsMin = new List<double>();
-        private List<double> originalStatsMax = new List<double>();
-        private int k = 0;
-        private int length = 0;
-        private int depth = 0;
-        //////////////////////////////////////////////////////////////////////
-
-       public KNN(DrugDataset dataset)
-        {
-            _dataset = dataset;
-
-            //Start -----------------------------------------------------------
-            KNN examplekNN = KNN.initialiseKNN(3, "DataSet.txt");
-
-            //List<double> instance2Classify = new List<double> { 12, 11, 500 };
-
-            foreach (DataRow row in DrugDataTable.Rows)
-            {
-                tempList.Add(row[columnName].ToString());
-            }
-
-            List<double> instance2Classify = new List<double> { 12, 11, 500 };
-            string result = examplekNN.Classify(instance2Classify);
-            //-----------------------------------------------------------------
-        }
-
-        private  KNN(int K, string FileName)
+        //private constructor allows to ensure k is odd
+        private KNN(int K, string FileName, bool Normalise)
         {
             k = K;
-            PopulateDataSetFromFile(FileName);
-        }
-
-        public void Train()
-        {
-
+            PopulateDataSetFromFile(FileName, Normalise);
         }
 
         /// <summary>
@@ -121,10 +84,11 @@ namespace Log635Lab03_Winform
         /// </summary>
         /// <param name="K">integer representiong the number of neighbors to use in the classifying instances</param>
         /// <param name="FileName">string file name containing knows numeric observations with string classes</param>
-        public static KNN initialiseKNN(int K, string FileName)
+        /// <param name="Normalise">boolean flag for normalising the data set</param>
+        public static KNN initialiseKNN(int K, string FileName, bool Normalise)
         {
             if (K % 2 > 0)
-                return new KNN(K, FileName);
+                return new KNN(K, FileName, Normalise);
             else
             {
                 Console.WriteLine("K must be odd.");
@@ -132,8 +96,14 @@ namespace Log635Lab03_Winform
             }
         }
 
+        //read-only properties
+        internal int K { get { return k; } }
+        internal Dictionary<List<double>, string> DataSet { get { return dataSet; } }
+
+        /// <summary>
         /// Classifies the instance according to a kNN algorithm
         /// calculates Eucledian distance between the instance and the know data
+        /// </summary>
         /// <param name="instance">List of doubles representing the instance values</param>
         /// <returns>returns string - classification</returns>
         internal string Classify(List<double> instance)
@@ -146,10 +116,17 @@ namespace Log635Lab03_Winform
                 return "Wrong number of instance parameters.";
             }
 
-            foreach (var one in instance)
+            if (normalised)
             {
-                normalisedInstance[i] = (one - originalStatsMin.ElementAt(i)) / (originalStatsMax.ElementAt(i) - originalStatsMin.ElementAt(i));
-                i++;
+                foreach (var one in instance)
+                {
+                    normalisedInstance[i] = (one - originalStatsMin.ElementAt(i)) / (originalStatsMax.ElementAt(i) - originalStatsMin.ElementAt(i));
+                    i++;
+                }
+            }
+            else
+            {
+                normalisedInstance = instance.ToArray();
             }
 
             double[,] keyValue = dataSet.Keys.ToMatrix(depth, length);
@@ -176,12 +153,14 @@ namespace Log635Lab03_Winform
 
             return result.Majority();
         }
-
+        /// <summary>
         /// Processess the file with the comma separated training data and populates the dictionary
         /// all values except for the class must be numeric
         /// the class is the last element in the dataset for each record
+        /// </summary>
         /// <param name="fileName">string fileName - the name of the file with the training data</param>
-        private void PopulateDataSetFromFile(string fileName)
+        /// <param name="normalise">bool normalise - true if the data needs to be normalised, false otherwiese</param>
+        private void PopulateDataSetFromFile(string fileName, bool normalise)
         {
             using (StreamReader sr = new StreamReader(fileName, true))
             {
@@ -201,6 +180,72 @@ namespace Log635Lab03_Winform
                 else
                     Console.WriteLine("No items in the data set");
             }
+            if (normalise)
+            {
+                NormaliseDataSet();
+                normalised = true;
+            }
         }
+
+        private void NormaliseDataSet()
+        {
+            var keyCollection = from n in dataSet.Keys
+                                select n;
+            var valuesCollection = from n in dataSet.Values
+                                   select n;
+
+            depth = dataSet.Keys.Count;
+            double[,] transpose = new double[length, depth];
+            double[,] original = new double[depth, length];
+            int i = 0, j = 0;
+
+            //transpose
+            foreach (var keyList in keyCollection)
+            {
+                foreach (var key in keyList)
+                {
+                    transpose[i, j] = key;
+                    i++;
+                }
+                j++; i = 0;
+            }
+
+            //normalise
+            double max, min;
+
+            for (i = 0; i < length; i++)
+            {
+                originalStatsMax.Add(max = transpose.Row(i).Max());
+                originalStatsMin.Add(min = transpose.Row(i).Min());
+
+                for (j = 0; j < depth; j++)
+                {
+                    transpose[i, j] = (transpose[i, j] - min) / (max - min);
+                }
+
+            }
+            for (i = 0; i < depth; i++)
+            {
+                for (j = 0; j < length; j++)
+                    original[i, j] = transpose[j, i];
+            }
+
+            //overwrite the current values with the normalised ones
+            dataSet = new Dictionary<List<double>, string>();
+            for (i = 0; i < depth; i++)
+            {
+                dataSet.Add(original.Row(i).ToList(), valuesCollection.ElementAt(i));
+            }
+        }
+
+        //private members
+        private Dictionary<List<double>, string> dataSet = new Dictionary<List<double>, string>();
+        private List<double> originalStatsMin = new List<double>();
+        private List<double> originalStatsMax = new List<double>();
+        private int k = 0;
+        private int length = 0;
+        private int depth = 0;
+        private bool normalised = false;
     }
 }
+ 
