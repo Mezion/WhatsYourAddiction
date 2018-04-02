@@ -16,10 +16,8 @@ namespace Log635Lab03_Winform
         {
             None,
             Normalized,
-            NumericDiscret,
-            NumericContinue,
+            Numeric,
             NumericPercent,
-            NumericRange,
             StringCategory
         }
 
@@ -58,8 +56,7 @@ namespace Log635Lab03_Winform
         private DataType DetectDataType()
         {
             var regPercent = new Regex(@"^[\d\.\s]+%$");
-            var regNumericContinue = new Regex(@"^[\d\.]+$");
-            var regNumericDiscret = new Regex(@"^\d+$");
+            var regNumeric = new Regex(@"^[\d\.]+$");
             var regNormalized = new Regex(@"^0.\d+|1|0$");
 
             if (_data.All(r => regNormalized.IsMatch(r)))
@@ -72,14 +69,9 @@ namespace Log635Lab03_Winform
                 return DataType.NumericPercent;
             }
 
-            if (_data.All(r => regNumericContinue.IsMatch(r)))
+            if (_data.All(r => regNumeric.IsMatch(r)))
             {
-                return DataType.NumericContinue;
-            }
-            
-            if (_data.All(r => regNumericDiscret.IsMatch(r)))
-            {
-                return DataType.NumericDiscret;
+                return DataType.Numeric;
             }
 
             return DataType.StringCategory;
@@ -93,17 +85,11 @@ namespace Log635Lab03_Winform
                     break;
                 case DataType.Normalized:
                     break;
-                case DataType.NumericDiscret:
-                    CleanNumericDiscret();
-                    break;
-                case DataType.NumericContinue:
-                    CleanNumericContinue();
+                case DataType.Numeric:
+                    CleanNumeric();
                     break;
                 case DataType.NumericPercent:
                     CleanNumericPercent();
-                    break;
-                case DataType.NumericRange:
-                    CleanNumericRange();
                     break;
                 case DataType.StringCategory:
                     CleanStringCategory();
@@ -111,12 +97,7 @@ namespace Log635Lab03_Winform
             }
         }
 
-        private void CleanNumericDiscret()
-        {
-
-        }
-
-        private void CleanNumericContinue()
+        private void CleanNumeric()
         {
             double min = _data.Min(x => double.Parse(x));
             double max = _data.Max(x => double.Parse(x));
@@ -150,12 +131,7 @@ namespace Log635Lab03_Winform
                 _data[i] = _data[i].Replace("%", "").Replace(" ", "");
             }
         }
-
-        private void CleanNumericRange()
-        {
-
-        }
-
+        
         private void CleanStringCategory()
         {
             Logger.LogMessage($"Cleaning string category data");
