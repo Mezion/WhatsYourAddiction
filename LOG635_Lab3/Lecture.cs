@@ -68,12 +68,12 @@ namespace LOG635_Lab3
                 for (int newRow = 0; newRow < (rows); newRow++)        //result.GetLength(0)
                 {
                     //If not the first row (title) or first column (ID)
-                    if (newRow != 0 && newCol != 0)
+                    if (newRow != 0 )
                     {
                         switch (newCol)
                         {
                         case 0: //ID
-                            newData[newRow, newCol] = result[newRow, newCol];
+                            newData[newRow, newCol] = "0";
                             break;
                         case 1: //AGE
                             newData[newRow, newCol] = (Age(result[newRow, newCol])).ToString();
@@ -124,8 +124,11 @@ namespace LOG635_Lab3
                             break;
                         }
                     }
-
-                    Console.Write(newData[newRow, newCol] + " ");
+                    else
+                    {
+                        newData[newRow, newCol] = "0";
+                    }
+                    //Console.Write(newData[newRow, newCol] + " ");
                 }
             }
             /* //////////////////////////////////////////////////////////////////////
@@ -198,7 +201,25 @@ namespace LOG635_Lab3
              
             //Output
             Output(newData, columns, rows, pathOut);
+            
+            //////////////////////////////////////////////////////////////////////
+            //KNN
+            //test
+            //int K = 20;
+            //Training set
+            //List<double> TrainingSet = newData.Cast<double>().ToList(); //new List<double[]>();
+            //Training set
+            List<double> TestSet = newData.Split(' ').Cast<double>().ToList(); //new List<double[]>();
+            //KNN.TestKnnCase(TrainingSet, TestSet, K);
+            //////////////////////////////////////////////////////////////////////
+            KNN examplekNN = KNN.initialiseKNN(3, @"C:\Users\Mart\Documents\GitHub\WhatsYourAddiction\output.txt", true);
 
+            List<double> instance2Classify = newData.Cast<double>().ToList(); //new List<double> { 12, 11, 500 };
+            string knnresult = examplekNN.Classify(instance2Classify);
+            Console.WriteLine("This instance is classified as: {0}", knnresult);
+            Console.ReadLine();
+            //////////////////////////////////////////////////////////////////////
+            
             //Console stays open
             Console.Read();
         }
