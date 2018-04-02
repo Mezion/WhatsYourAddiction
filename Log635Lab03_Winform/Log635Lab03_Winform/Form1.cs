@@ -40,7 +40,7 @@ namespace Log635Lab03_Winform
 
         private void BtnOpen_Click(object sender, EventArgs e)
         {
-            if (!File.Exists(@"G:\workspace\WhatsYourAddiction\Dataset.csv"))
+            if (!File.Exists(txtFile.Text))
             {
                 MessageBox.Show("Le chemin est invalid");
                 return;
