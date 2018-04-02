@@ -53,6 +53,7 @@
     <Compile Include="DataCleaner.cs" />
     <Compile Include="DataHelper.cs" />
     <Compile Include="DataStat.cs" />
+    <Compile Include="DecisionTree.cs" />
     <Compile Include="DrugDataset.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -78,6 +79,7 @@
     <Compile Include="FormStat.Designer.cs">
       <DependentUpon>FormStat.cs</DependentUpon>
     </Compile>
+    <Compile Include="KNN.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

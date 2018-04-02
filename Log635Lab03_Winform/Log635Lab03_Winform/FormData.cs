@@ -98,5 +98,17 @@ namespace Log635Lab03_Winform
             var formStat = new FormStat(cmbColumns.Text, results);
             formStat.Show();
         }
+
+        private void btnDecisionTree_Click(object sender, EventArgs e)
+        {
+            btnCleanAll_Click(sender, e);
+            DecisionTree decisionTree = new DecisionTree(_drugDataset.DrugDataTable);
+        }
+
+        private void btnKNN_Click(object sender, EventArgs e)
+        {
+            btnCleanAll_Click(sender, e);
+            KNN knn = new KNN(_drugDataset.DrugDataTable);
+        }
     }
 }
