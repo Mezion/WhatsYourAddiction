@@ -91,5 +91,12 @@ namespace Log635Lab03_Winform
                 column.Visible = false;
             }
         }
+
+        private void btnStat_Click(object sender, EventArgs e)
+        {
+            var results = DataStat.Calculate(_drugDataset.GetRows(cmbColumns.Text));
+            var formStat = new FormStat(cmbColumns.Text, results);
+            formStat.Show();
+        }
     }
 }

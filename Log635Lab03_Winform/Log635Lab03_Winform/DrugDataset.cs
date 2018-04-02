@@ -52,13 +52,7 @@ namespace Log635Lab03_Winform
             }
 
             Logger.LogMessage($"\nCreate temporary data list");
-            List<string> tempList = new List<string>();
-            
-            foreach (DataRow row in DrugDataTable.Rows)
-            {
-                tempList.Add(row[columnName].ToString());
-            }
-
+            List<string> tempList = GetRows(columnName);
             Logger.LogMessage($"Create DataCleaner, ready to clean {tempList.Count} rows");
 
             DataCleaner dataCleaner = new DataCleaner(tempList, columnName);
@@ -77,6 +71,23 @@ namespace Log635Lab03_Winform
             }
 
             Logger.LogMessage($"Data has been updated in Dataset successfully\n");
+        }
+
+        public List<string> GetRows(string columnName)
+        {
+            if (!Columns.Contains(columnName))
+            {
+                return new List<string>();
+            }
+
+            List<string> tempList = new List<string>();
+
+            foreach (DataRow row in DrugDataTable.Rows)
+            {
+                tempList.Add(row[columnName].ToString());
+            }
+
+            return tempList;
         }
     }
 }

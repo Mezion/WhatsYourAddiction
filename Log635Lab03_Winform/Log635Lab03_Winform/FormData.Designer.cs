@@ -32,13 +32,15 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
             this.cmbColumns = new System.Windows.Forms.ComboBox();
             this.btnCleanColumn = new System.Windows.Forms.Button();
             this.btnCleanAll = new System.Windows.Forms.Button();
             this.btnShowColumn = new System.Windows.Forms.Button();
             this.btnShowAll = new System.Windows.Forms.Button();
             this.btnRemoveAll = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnStat = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -62,12 +64,14 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.Controls.Add(this.dataGridView1, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel2, 0, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1225, 590);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
@@ -82,9 +86,10 @@
             this.flowLayoutPanel1.Controls.Add(this.btnShowColumn);
             this.flowLayoutPanel1.Controls.Add(this.btnShowAll);
             this.flowLayoutPanel1.Controls.Add(this.btnRemoveAll);
+            this.flowLayoutPanel1.Controls.Add(this.btnStat);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1051, 29);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1156, 29);
             this.flowLayoutPanel1.TabIndex = 1;
             // 
             // panel1
@@ -96,15 +101,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(103, 18);
             this.panel1.TabIndex = 5;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 5);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(94, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Choisir un colonne";
             // 
             // cmbColumns
             // 
@@ -166,6 +162,32 @@
             this.btnRemoveAll.UseVisualStyleBackColor = true;
             this.btnRemoveAll.Click += new System.EventHandler(this.btnRemoveAll_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 5);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(94, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Choisir un colonne";
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 593);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(200, 14);
+            this.flowLayoutPanel2.TabIndex = 0;
+            // 
+            // btnStat
+            // 
+            this.btnStat.Location = new System.Drawing.Point(1054, 3);
+            this.btnStat.Name = "btnStat";
+            this.btnStat.Size = new System.Drawing.Size(99, 23);
+            this.btnStat.TabIndex = 9;
+            this.btnStat.Text = "Statistiques";
+            this.btnStat.UseVisualStyleBackColor = true;
+            this.btnStat.Click += new System.EventHandler(this.btnStat_Click);
+            // 
             // FormData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -191,12 +213,14 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cmbColumns;
         private System.Windows.Forms.Button btnCleanColumn;
         private System.Windows.Forms.Button btnCleanAll;
         private System.Windows.Forms.Button btnShowColumn;
         private System.Windows.Forms.Button btnShowAll;
         private System.Windows.Forms.Button btnRemoveAll;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnStat;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
     }
 }
