@@ -103,7 +103,6 @@ namespace Log635Lab03_Winform
 
         private void btnBuild_Click(object sender, EventArgs e)
         {
-            _drugDataset.CleanAllColumns();
 
             List<string> columnsInConsideration = new List<string>();
             for (int i = 0; i < checkedListBox1.Items.Count; i++)
@@ -121,7 +120,7 @@ namespace Log635Lab03_Winform
                 MessageBox.Show("Entropie format est pas valide");
                 return;
             }
-            if (entropie < 0 || entropie > 0)
+            if (entropie < 0 || entropie > 1)
             {
                 MessageBox.Show("Entropie doit etre entre 0 et 1");
                 return;
@@ -148,7 +147,10 @@ namespace Log635Lab03_Winform
             if (rb34.Checked)
                 ratio = TrainingRatio.T3_E4;
 
+
             Logger.BringToFront();
+
+            _drugDataset.CleanAllColumns();
 
             DecisionTree decisionTree = new DecisionTree(_drugDataset, columnsInConsideration, entropie, ratio);
             _tree = decisionTree.RunTraining();
