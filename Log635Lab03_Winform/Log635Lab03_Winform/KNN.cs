@@ -72,66 +72,42 @@ namespace Log635Lab03_Winform
         }
     }
 
+    //////////////////////////////////////////////////////////////////////
+    //KNN
     public class KNN
     {
-        private DrugDataset _dataset;
-
         //////////////////////////////////////////////////////////////////////
-        //private members
+        private DrugDataset _dataset;
+        private int k = 20;
+        //private int averageDistance = 0;
+        private List<String> trainData;      //Training data
+        //////////////////////////////////////////////////////////////////////
         private Dictionary<List<double>, string> dataSet = new Dictionary<List<double>, string>();
         private List<double> originalStatsMin = new List<double>();
         private List<double> originalStatsMax = new List<double>();
-        private int k = 0;
         private int length = 0;
         private int depth = 0;
         //////////////////////////////////////////////////////////////////////
 
-       public KNN(DrugDataset dataset)
+        public KNN(DrugDataset dataset)
         {
             _dataset = dataset;
-
-            //Start -----------------------------------------------------------
-            KNN examplekNN = KNN.initialiseKNN(3, "DataSet.txt");
-
-            //List<double> instance2Classify = new List<double> { 12, 11, 500 };
-
-            //foreach (DataRow row in DrugDataTable.Rows)
-            //{
-            //    tempList.Add(row[columnName].ToString());
-            //}
-
+     
+            PopulateDataSetFromFile("DataSet.txt");
             List<double> instance2Classify = new List<double> { 12, 11, 500 };
-            string result = examplekNN.Classify(instance2Classify);
-            //-----------------------------------------------------------------
-        }
-
-        private  KNN(int K, string FileName)
-        {
-            k = K;
-            PopulateDataSetFromFile(FileName);
+            string result = Classify(instance2Classify);
+            Console.WriteLine("This instance is classified as: {0}", result);
+            Console.ReadLine();
         }
 
         public void Train()
         {
-
         }
 
-        /// <summary>
-        /// Initialises the kNN class, the observations data set and the number of neighbors to use in voting when classifying
-        /// </summary>
-        /// <param name="K">integer representiong the number of neighbors to use in the classifying instances</param>
-        /// <param name="FileName">string file name containing knows numeric observations with string classes</param>
-        public static KNN initialiseKNN(int K, string FileName)
-        {
-            if (K % 2 > 0)
-                return new KNN(K, FileName);
-            else
-            {
-                Console.WriteLine("K must be odd.");
-                return null;
-            }
-        }
+        internal int K { get { return k; } }
+        internal Dictionary<List<double>, string> DataSet { get { return dataSet; } }
 
+        //////////////////////////////////////////////////////////////////////
         /// Classifies the instance according to a kNN algorithm
         /// calculates Eucledian distance between the instance and the know data
         /// <param name="instance">List of doubles representing the instance values</param>
@@ -142,15 +118,13 @@ namespace Log635Lab03_Winform
             double[] normalisedInstance = new double[length];
 
             if (instance.Count != length)
-            {
                 return "Wrong number of instance parameters.";
-            }
 
-            foreach (var one in instance)
-            {
-                normalisedInstance[i] = (one - originalStatsMin.ElementAt(i)) / (originalStatsMax.ElementAt(i) - originalStatsMin.ElementAt(i));
-                i++;
-            }
+             foreach (var one in instance)
+             {
+                    normalisedInstance[i] = (one - originalStatsMin.ElementAt(i)) / (originalStatsMax.ElementAt(i) - originalStatsMin.ElementAt(i));
+                    i++;
+             }
 
             double[,] keyValue = dataSet.Keys.ToMatrix(depth, length);
             double[] distances = new double[depth];
@@ -177,13 +151,15 @@ namespace Log635Lab03_Winform
             return result.Majority();
         }
 
+        //////////////////////////////////////////////////////////////////////
         /// Processess the file with the comma separated training data and populates the dictionary
         /// all values except for the class must be numeric
         /// the class is the last element in the dataset for each record
         /// <param name="fileName">string fileName - the name of the file with the training data</param>
+        /// <param name="normalise">bool normalise - true if the data needs to be normalised, false otherwiese</param>
         private void PopulateDataSetFromFile(string fileName)
         {
-            using (StreamReader sr = new StreamReader(fileName, true))
+            using (StreamReader sr = new StreamReader(fileName))
             {
                 List<string> allItems = sr.ReadToEnd().TrimEnd().Split('\n').ToList();
 
@@ -203,4 +179,4 @@ namespace Log635Lab03_Winform
             }
         }
     }
-}
+    }
