@@ -34,6 +34,7 @@ namespace Log635Lab03_Winform
         private readonly List<string> _remainingColumns;
         private readonly List<string> _forbiddenColumns = new List<string>() {"Id", "Nicotine"};
         private readonly DrugDataset _dataset;
+        private Tuple<int, double> _resultPredicateRange;
 
         public DecisionTree(DrugDataset dataset)
         {
@@ -41,14 +42,24 @@ namespace Log635Lab03_Winform
             _dataset = dataset;
             _remainingColumns = _dataset.Columns.Select(c => c).ToList();
 
+            InitResult();
+
             var root = Train();
 
             Evaluate(root);
+        }
+        private void InitResult()
+        {
+            var results = _dataset.GetTrainingRows("Nicotine").Select(c => double.Parse(c)).ToList();
+            _resultPredicateRange = DeterminePredicateRange(results);
         }
 
         private void Evaluate(TreeNode tree)
         {
             int i = 0;
+
+            List<bool> succeed = new List<bool>();
+
             foreach (DataRow row in _dataset.DrugDataTable.Rows)
             {
                 if (i % 2 == 0)
@@ -57,24 +68,33 @@ namespace Log635Lab03_Winform
                     continue;
                 }
 
-                var evalutation = RunTree(row, tree, 0);
+                int depth = 0;
+
+                var evalutation = RunTree(row, tree, 0, ref depth);
                 var expected = double.Parse(row["Nicotine"].ToString());
 
-                Logger.LogWarning($"{Math.Abs(evalutation - expected) < 0.01}, Evaluation: {evalutation}, Expected: {expected}");
+                var success = Math.Abs(evalutation - expected) < 0.01;
+                succeed.Add(success);
+                Logger.LogWarning($"{success}, Evaluation: {evalutation}, Expected: {expected}, node ran: {depth}");
 
                 i++;
             }
+
+            var rate = ((double)succeed.Count(s => s) / succeed.Count) * 100;
+            Logger.LogWarning($"\n{rate} % ");
         }
 
-        private double RunTree(DataRow row, TreeNode currentNode, double result)
+        private double RunTree(DataRow row, TreeNode currentNode, double result, ref int depth)
         {
             if (currentNode == null)
                 return result;
 
-            if (currentNode.Predicate(double.Parse(row[currentNode.Column].ToString())))
-                return RunTree(row, currentNode.ChildTrue, currentNode.Result);
+            depth++;
+
+            if (!currentNode.Predicate(double.Parse(row[currentNode.Column].ToString())))
+                return RunTree(row, currentNode.ChildTrue, currentNode.Result, ref depth);
             else
-                return RunTree(row, currentNode.ChildFalse, currentNode.Result);
+                return RunTree(row, currentNode.ChildFalse, currentNode.Result, ref depth);
             
         }
 
@@ -109,9 +129,6 @@ namespace Log635Lab03_Winform
 
         private TreeNode CreateNode(List<EvaluatedColumnPredicate> evaluatedParent, DrugDataset dataset)
         {
-            var results = dataset.GetTrainingRows("Nicotine").Select(c => double.Parse(c)).ToList();
-            var resultPredicateRange = DeterminePredicateRange(results);
-
             var nodeCandidates = new Tuple<double, TreeNode>(double.MaxValue, null);
             EvaluatedColumnPredicate evaluationCandidate = new EvaluatedColumnPredicate();
             double entropieCandidate = -1;
@@ -126,12 +143,12 @@ namespace Log635Lab03_Winform
                 var values = dataset.GetTrainingRows(column).Select(c => double.Parse(c)).ToList();
                 var valuePredicateRange = DeterminePredicateRange(values);
 
-                for (int i = 0; i < resultPredicateRange.Item1; i++)
+                for (int i = 0; i < _resultPredicateRange.Item1; i++)
                 {
                     for (int j = 0; j < valuePredicateRange.Item1; j++)
                     {
                         var valuePredicate = new Predicate<double>(d => d >= j * valuePredicateRange.Item2 && d < (j + 1) * valuePredicateRange.Item2);
-                        var resultPredicate = new Predicate<double>(d => d >= i * resultPredicateRange.Item2 && d < (i + 1) * resultPredicateRange.Item2);
+                        var resultPredicate = new Predicate<double>(d => d >= i * _resultPredicateRange.Item2 && d < (i + 1) * _resultPredicateRange.Item2);
 
                         var minExp = (j * valuePredicateRange.Item2).ToString();
                         var maxExp = ((j + 1) * valuePredicateRange.Item2).ToString();
@@ -153,6 +170,7 @@ namespace Log635Lab03_Winform
                             continue;
                         }
 
+                        var results = dataset.GetTrainingRows("Nicotine").Select(c => double.Parse(c)).ToList();
                         var entropie = CalculateEntropie(results, values, valuePredicate, resultPredicate);
 
                         if (entropie < 0 || entropie > 1)
@@ -170,8 +188,13 @@ namespace Log635Lab03_Winform
                                 Predicate = valuePredicate,
                                 TrueFilterExpression = trueFilterExpression,
                                 FalseFilterExpression = falseFilterExpression,
-                                Result = i * resultPredicateRange.Item2
+                                Result = i * _resultPredicateRange.Item2
                             });
+                        }
+
+                        if (_resultPredicateRange.Item2 < 0.16 || _resultPredicateRange.Item2 > 0.17)
+                        {
+                            Logger.LogError("Worng result");
                         }
                     }
                 }
