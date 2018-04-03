@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using MathNet.Numerics.Statistics;
 using Newtonsoft.Json;
 
@@ -263,6 +265,13 @@ namespace Log635Lab03_Winform
             return newDataset;
         }
 
+        struct ColumnUse
+        {
+            public string Column { get; set; }
+            public int Use { get; set; }
+        }
+        private List<ColumnUse> _columnUses = new List<ColumnUse>();
+
         private TreeNode CreateNode(List<EvaluatedColumnPredicate> evaluatedParent, DrugDataset dataset)
         {
             var nodeCandidates = new Tuple<double, TreeNode>(double.MaxValue, null);
@@ -283,11 +292,12 @@ namespace Log635Lab03_Winform
                 {
                     for (int j = 0; j < valuePredicateRange.Item1; j++)
                     {
-                        var valuePredicate = new Predicate<double>(d => d >= j * valuePredicateRange.Item2 && d < (j + 1) * valuePredicateRange.Item2);
                         var resultPredicate = new Predicate<double>(d => d >= i * _resultPredicateRange.Item2 && d < (i + 1) * _resultPredicateRange.Item2);
 
-                        var minExp = (j * valuePredicateRange.Item2).ToString();
-                        var maxExp = ((j + 1) * valuePredicateRange.Item2).ToString();
+                        var minExp = 0.ToString();
+                        var maxExp = (valuePredicateRange.Item1 * valuePredicateRange.Item2 - ((j + 1) * valuePredicateRange.Item2)).ToString(CultureInfo.InvariantCulture);
+                        //var minExp = (j * valuePredicateRange.Item2).ToString();
+                        //var maxExp = ((j + 1) * valuePredicateRange.Item2).ToString();
                         var reg = new Regex(@"^[\d]+\.[\d]+$");
 
                         if (!reg.IsMatch(minExp))
@@ -295,6 +305,14 @@ namespace Log635Lab03_Winform
 
                         if (!reg.IsMatch(maxExp))
                             maxExp += ".0";
+
+                        double test = 0;
+                        if (!double.TryParse(maxExp, out test))
+                        {
+                            continue;
+                        }
+
+                        var valuePredicate = new Predicate<double>(d => d >= double.Parse(minExp) && d < double.Parse(maxExp));
 
                         var trueFilterExpression = $"{column} >= {minExp} AND {column} < {maxExp}";
                         var falseFilterExpression = $"NOT ({column} >= {minExp} AND {column} < {maxExp})";
