@@ -168,7 +168,6 @@ namespace Log635Lab03_Winform
                             tempList.Add(row[columnName].ToString());
                         break;
                 }
-                
                 i++;
             }
 

@@ -109,7 +109,7 @@ namespace Log635Lab03_Winform
             {
                 BuildTime = stopwatch.ElapsedMilliseconds,
                 Columns = _columnsInConsideration.ToArray(),
-                Name = DateTime.Now.ToLongTimeString(),
+                Name = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString(),
                 Root = root,
                 StoppingEntropie = _stopEntropie,
                 SuccessRate = rate,
@@ -134,67 +134,72 @@ namespace Log635Lab03_Winform
                 switch (_trainingRatio)
                 {
                     case TrainingRatio.T1_E1:
-                        if (i % 2 == 0)
+                        if (i % 2 == 1)
                         {
                             i++;
                             continue;
                         }
+
                         break;
                     case TrainingRatio.T2_E1:
-                        if (i % 3 > 1)
-                        {
-                            i++;
-                            continue;
-                        }
-                        break;
-                    case TrainingRatio.T3_E1:
-                        if (i % 4 > 2)
-                        {
-                            i++;
-                            continue;
-                        }
-                        break;
-                    case TrainingRatio.T4_E1:
-                        if (i % 5 > 3)
-                        {
-                            i++;
-                            continue;
-                        }
-                        break;
-                    case TrainingRatio.T1_E2:
                         if (i % 3 <= 1)
                         {
                             i++;
                             continue;
                         }
+
                         break;
-                    case TrainingRatio.T1_E3:
+                    case TrainingRatio.T3_E1:
                         if (i % 4 <= 2)
                         {
                             i++;
                             continue;
                         }
+
                         break;
-                    case TrainingRatio.T1_E4:
+                    case TrainingRatio.T4_E1:
                         if (i % 5 <= 3)
                         {
                             i++;
                             continue;
                         }
+
+                        break;
+                    case TrainingRatio.T1_E2:
+                        if (i % 3 > 1)
+                        {
+                            i++;
+                            continue;
+                        }
+
+                        break;
+                    case TrainingRatio.T1_E3:
+                        if (i % 4 > 2)
+                            i++;
+                        continue;
+                    case TrainingRatio.T1_E4:
+                        if (i % 5 > 3)
+                        {
+                            i++;
+                            continue;
+                        }
+
                         break;
                     case TrainingRatio.T2_E3:
-                        if (i % 5 <= 2)
+                        if (i % 5 > 2)
                         {
                             i++;
                             continue;
                         }
+
                         break;
                     case TrainingRatio.T3_E4:
-                        if (i % 7 <= 3)
+                        if (i % 7 > 3)
                         {
                             i++;
                             continue;
                         }
+
                         break;
                 }
 
