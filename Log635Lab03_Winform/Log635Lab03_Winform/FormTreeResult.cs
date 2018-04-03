@@ -10,14 +10,14 @@ using System.Windows.Forms;
 
 namespace Log635Lab03_Winform
 {
-    public partial class FormTree : Form
+    public partial class FormTreeResult : Form
     {
         public TreePanel TreePanel
         {
             get { return treePanel1; }
         }
 
-        public FormTree()
+        public FormTreeResult()
         {
             InitializeComponent();
         }

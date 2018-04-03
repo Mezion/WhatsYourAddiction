@@ -49,5 +49,10 @@ namespace Log635Lab03_Winform
             Logs.Add(new Log {Text = text, LogType = LogType.Error});
             _form.UpdateLogs();
         }
+
+        public static void BringToFront()
+        {
+            _form.BringToFront();
+        }
     }
 }

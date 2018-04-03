@@ -101,8 +101,8 @@ namespace Log635Lab03_Winform
 
         private void btnDecisionTree_Click(object sender, EventArgs e)
         {
-            btnCleanAll_Click(sender, e);
-            DecisionTree decisionTree = new DecisionTree(_drugDataset);
+            var buildTreeForm = new FormTreeBuilder(_drugDataset);
+            buildTreeForm.Show();
         }
 
         private void btnKNN_Click(object sender, EventArgs e)

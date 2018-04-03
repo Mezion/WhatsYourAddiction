@@ -35,6 +35,9 @@
     <Reference Include="MathNet.Numerics, Version=4.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MathNet.Numerics.4.4.0\lib\net461\MathNet.Numerics.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
@@ -79,16 +82,23 @@
     <Compile Include="FormStat.Designer.cs">
       <DependentUpon>FormStat.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormTree.cs">
+    <Compile Include="FormTreeBuilder.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormTree.Designer.cs">
-      <DependentUpon>FormTree.cs</DependentUpon>
+    <Compile Include="FormTreeBuilder.Designer.cs">
+      <DependentUpon>FormTreeBuilder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormTreeResult.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTreeResult.Designer.cs">
+      <DependentUpon>FormTreeResult.cs</DependentUpon>
     </Compile>
     <Compile Include="KNN.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SavingTree.cs" />
     <Compile Include="TreePanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -107,8 +117,11 @@
     <EmbeddedResource Include="FormStat.resx">
       <DependentUpon>FormStat.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormTree.resx">
-      <DependentUpon>FormTree.cs</DependentUpon>
+    <EmbeddedResource Include="FormTreeBuilder.resx">
+      <DependentUpon>FormTreeBuilder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormTreeResult.resx">
+      <DependentUpon>FormTreeResult.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

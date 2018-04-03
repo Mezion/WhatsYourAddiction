@@ -1,6 +1,6 @@
 ﻿namespace Log635Lab03_Winform
 {
-    partial class FormTree
+    partial class FormTreeResult
     {
         /// <summary>
         /// Required designer variable.

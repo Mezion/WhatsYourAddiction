@@ -117,7 +117,7 @@ namespace Log635Lab03_Winform
             return tempList;
         }
 
-        public List<string> GetTrainingRows(string columnName)
+        public List<string> GetTrainingRows(string columnName, TrainingRatio ratio)
         {
             if (!Columns.Contains(columnName))
             {
@@ -129,8 +129,46 @@ namespace Log635Lab03_Winform
             int i = 0;
             foreach (DataRow row in DrugDataTable.Rows)
             {
-                if (i % 2 == 0)
-                    tempList.Add(row[columnName].ToString());
+                switch (ratio)
+                {
+                    case TrainingRatio.T1_E1:
+                        if (i % 2 == 1)
+                            tempList.Add(row[columnName].ToString());
+                        break;
+                    case TrainingRatio.T2_E1:
+                        if (i % 3 <= 1)
+                            tempList.Add(row[columnName].ToString());
+                        break;
+                    case TrainingRatio.T3_E1:
+                        if (i % 4 <= 2)
+                            tempList.Add(row[columnName].ToString());
+                        break;
+                    case TrainingRatio.T4_E1:
+                        if (i % 5 <= 3)
+                            tempList.Add(row[columnName].ToString());
+                        break;
+                    case TrainingRatio.T1_E2:
+                        if (i % 3 > 1)
+                            tempList.Add(row[columnName].ToString());
+                        break;
+                    case TrainingRatio.T1_E3:
+                        if (i % 4 > 2)
+                            tempList.Add(row[columnName].ToString());
+                        break;
+                    case TrainingRatio.T1_E4:
+                        if (i % 5 > 3)
+                            tempList.Add(row[columnName].ToString());
+                        break;
+                    case TrainingRatio.T2_E3:
+                        if (i % 5 > 2)
+                            tempList.Add(row[columnName].ToString());
+                        break;
+                    case TrainingRatio.T3_E4:
+                        if (i % 7 > 3)
+                            tempList.Add(row[columnName].ToString());
+                        break;
+                }
+                
                 i++;
             }
 
