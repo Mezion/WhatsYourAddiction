@@ -216,5 +216,49 @@ namespace Log635Lab03_Winform
             for (int i = 0; i < checkedListBox1.Items.Count; i++)
                 checkedListBox1.SetItemChecked(i, true);
         }
+
+        private void btnSearchEvaluationFile_Click(object sender, EventArgs e)
+        {
+            var dialog = new OpenFileDialog
+            {
+                InitialDirectory = @"C:\",
+                Filter = "csv files (*.csv)|*.csv",
+                CheckFileExists = true,
+                CheckPathExists = true,
+                Multiselect = false
+            };
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                txtEvaluationFile.Text = dialog.FileName;
+            }
+        }
+
+        private void btnEvaluateFile_Click(object sender, EventArgs e)
+        {
+            var rawDataset = new DrugDataset();
+            var normalizedDataset = new DrugDataset();
+
+            var rawLines = File.ReadAllLines(txtEvaluationFile.Text).Select(x => x.Split(',')).ToList();
+            var lines = File.ReadAllLines(txtEvaluationFile.Text).Select(x => x.Split(',')).ToList();
+            Logger.LogMessage($"All lines were read from evaluation file ${txtEvaluationFile.Text}");
+
+            try
+            {
+                rawDataset.CreateDataset(rawLines);
+                normalizedDataset.CreateDataset(lines);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError($"Error happened while creating Dataset: ${ex.Message}");
+            }
+
+            normalizedDataset.CleanAllColumns();
+
+            DecisionTreePrediction prediction = new DecisionTreePrediction(rawDataset, normalizedDataset, _tree);
+            prediction.Predict();
+           
+        }
+
     }
 }

@@ -57,6 +57,7 @@
     <Compile Include="DataHelper.cs" />
     <Compile Include="DataStat.cs" />
     <Compile Include="DecisionTree.cs" />
+    <Compile Include="DecisionTreePrediction.cs" />
     <Compile Include="DrugDataset.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
