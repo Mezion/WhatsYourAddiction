@@ -86,9 +86,20 @@ namespace Log635Lab03_Winform
         private int depth = 0;
         //////////////////////////////////////////////////////////////////////
 
-       public KNN(DrugDataset dataset)
+        public KNN(DrugDataset dataset)
         {
-            _dataset = dataset;
+            //_dataset = dataset;
+            //_dataset.Columns.ForEach(c => {
+            //    var rows =_dataset.GetRows(c);
+
+
+            //});
+            //var list = _dataset.GetRows("Nicotine");
+            //_dataset.CleanAllColumns();
+
+            //var listDoubles = list.Select(d => double.Parse(d)).ToList();
+
+            
 
             //Start -----------------------------------------------------------
             KNN examplekNN = KNN.initialiseKNN(3, "DataSet.txt");
