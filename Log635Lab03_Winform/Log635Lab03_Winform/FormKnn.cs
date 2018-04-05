@@ -49,6 +49,13 @@ namespace Log635Lab03_Winform
                 return;
             }
 
+            int neighborInConsideration = 0;
+            if (!int.TryParse(txtNbNeighbor.Text, out neighborInConsideration) || neighborInConsideration <= 0)
+            {
+                MessageBox.Show("Le nombre de voisin à prendre en considération est invalide");
+                return;
+            }
+
             var dataset = new DrugDataset();
            
             var lines = File.ReadAllLines(txtEvaluationFile.Text).Select(x => x.Split(',')).ToList();
@@ -72,8 +79,18 @@ namespace Log635Lab03_Winform
                     columnsInConsideration.Add(checkedListBox1.Items[i].ToString());
                 }
             }
+
+            KNNInterpretation interpretation = KNNInterpretation.Mode;
+
+            if (rbMediane.Checked)
+                interpretation = KNNInterpretation.Median;
+            else if (rbMode.Checked)
+                interpretation = KNNInterpretation.Mode;
+            else if (rbMoyenne.Checked)
+                interpretation = KNNInterpretation.Mean;
             
-            _knn2 = new KNN2(_drugDataset, columnsInConsideration, dataset);
+            Logger.BringToFront();
+            _knn2 = new KNN2(_drugDataset, columnsInConsideration, dataset, neighborInConsideration, interpretation);
         }
     }
 }

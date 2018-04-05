@@ -35,18 +35,33 @@ namespace Log635Lab03_Winform
         public static void LogMessage(string text)
         {
             Logs.Add(new Log {Text = text, LogType = LogType.Message});
+            if (_form.IsDisposed)
+            {
+                _form = new FormLogs();
+                _form.Show();
+            }
             _form.UpdateLogs();
         }
 
         public static void LogWarning(string text)
         {
             Logs.Add(new Log {Text = text, LogType = LogType.Warning});
+            if (_form.IsDisposed)
+            {
+                _form = new FormLogs();
+                _form.Show();
+            }
             _form.UpdateLogs();
         }
 
         public static void LogError(string text)
         {
             Logs.Add(new Log {Text = text, LogType = LogType.Error});
+            if (_form.IsDisposed)
+            {
+                _form = new FormLogs();
+                _form.Show();
+            }
             _form.UpdateLogs();
         }
 

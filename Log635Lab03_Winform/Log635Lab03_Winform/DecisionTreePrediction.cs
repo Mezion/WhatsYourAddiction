@@ -33,7 +33,7 @@ namespace Log635Lab03_Winform
                 var standard = Math.Round(evaluation * 6, 0, MidpointRounding.ToEven);
                 _rawDataset.DrugDataTable.Rows[i]["Prediction Nicotine"] = standard;
 
-                Logger.LogMessage($"Normalized prediction for row {i}: normalized = {evaluation},  standard = {standard}");
+                Logger.LogMessage($"Prediction for row {i}: Nicotine = {standard}");
 
                 i++;
             }
