@@ -122,7 +122,7 @@ namespace Log635Lab03_Winform
                 var nicotine = nearer.Select(ne =>
                 {
                     var value = double.Parse(ne.Item2["Nicotine"].ToString());
-                    return Math.Round(value * 6, 0, MidpointRounding.ToEven);
+                    return $"Nicotine: {Math.Round(value * 6, 0, MidpointRounding.ToEven)}   Distance: {ne.Item1}";
                 });
 
                 Logger.LogMessage(

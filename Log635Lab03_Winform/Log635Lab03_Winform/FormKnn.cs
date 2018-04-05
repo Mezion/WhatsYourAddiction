@@ -56,6 +56,23 @@ namespace Log635Lab03_Winform
                 return;
             }
 
+
+            var columnsInConsideration = new List<string>();
+
+            for (int i = 0; i < checkedListBox1.Items.Count; i++)
+            {
+                if (checkedListBox1.GetItemCheckState(i) == CheckState.Checked)
+                {
+                    columnsInConsideration.Add(checkedListBox1.Items[i].ToString());
+                }
+            }
+
+            if (columnsInConsideration.Contains("Nicotine"))
+            {
+                MessageBox.Show("Les colonnes en considération ne peuvent pas contenir la colonne Nicotine");
+                return;
+            }
+
             var dataset = new DrugDataset();
            
             var lines = File.ReadAllLines(txtEvaluationFile.Text).Select(x => x.Split(',')).ToList();
@@ -68,16 +85,6 @@ namespace Log635Lab03_Winform
             catch (Exception ex)
             {
                 Logger.LogError($"Error happened while creating Dataset: ${ex.Message}");
-            }
-
-            var columnsInConsideration = new List<string>();
-
-            for (int i = 0; i < checkedListBox1.Items.Count; i++)
-            {
-                if (checkedListBox1.GetItemCheckState(i) == CheckState.Checked)
-                {
-                    columnsInConsideration.Add(checkedListBox1.Items[i].ToString());
-                }
             }
 
             KNNInterpretation interpretation = KNNInterpretation.Mode;
