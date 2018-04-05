@@ -17,7 +17,6 @@ namespace Log635Lab03_Winform
         private readonly string _csvFile;
         private DrugDataset _drugDataset;
 
-
         public FormData(string file)
         {
             InitializeComponent();
@@ -107,8 +106,8 @@ namespace Log635Lab03_Winform
 
         private void btnKNN_Click(object sender, EventArgs e)
         {
-            btnCleanAll_Click(sender, e);
-            KNN knn = new KNN(_drugDataset);
+            var knnForm = new FormKnn(_drugDataset);
+            knnForm.Show();
         }
     }
 }

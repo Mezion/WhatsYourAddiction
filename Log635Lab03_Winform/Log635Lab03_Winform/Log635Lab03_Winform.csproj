@@ -71,6 +71,12 @@
     <Compile Include="FormData.Designer.cs">
       <DependentUpon>FormData.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormKnn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormKnn.Designer.cs">
+      <DependentUpon>FormKnn.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormLogs.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -95,6 +101,7 @@
     <Compile Include="FormTreeResult.Designer.cs">
       <DependentUpon>FormTreeResult.cs</DependentUpon>
     </Compile>
+    <Compile Include="KNN2.cs" />
     <Compile Include="KNN.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Program.cs" />
@@ -111,6 +118,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormData.resx">
       <DependentUpon>FormData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormKnn.resx">
+      <DependentUpon>FormKnn.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormLogs.resx">
       <DependentUpon>FormLogs.cs</DependentUpon>

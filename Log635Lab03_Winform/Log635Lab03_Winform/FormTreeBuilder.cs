@@ -24,7 +24,7 @@ namespace Log635Lab03_Winform
             InitializeComponent();
 
             checkedListBox1.Items.Clear();
-            _drugDataset.Columns.ForEach(c => checkedListBox1.Items.Add(c));
+            _drugDataset.Columns.OrderBy(c => c).ToList().ForEach(c => checkedListBox1.Items.Add(c));
             for (int i = 0; i < checkedListBox1.Items.Count; i++)
                 checkedListBox1.SetItemChecked(i, true);
 
@@ -236,6 +236,12 @@ namespace Log635Lab03_Winform
 
         private void btnEvaluateFile_Click(object sender, EventArgs e)
         {
+            if (!File.Exists(txtEvaluationFile.Text))
+            {
+                MessageBox.Show("Chemin invalide");
+                return;
+            }
+
             var rawDataset = new DrugDataset();
             var normalizedDataset = new DrugDataset();
 
