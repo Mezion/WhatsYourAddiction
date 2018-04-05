@@ -130,6 +130,7 @@ namespace Log635Lab03_Winform
             int i = 0;
 
             List<bool> succeed = new List<bool>();
+            List<double> diffs = new List<double>();
 
             foreach (DataRow row in _dataset.DrugDataTable.Rows)
             {
@@ -212,13 +213,22 @@ namespace Log635Lab03_Winform
 
                 var success = Math.Abs(evalutation - expected) < 0.01;
                 succeed.Add(success);
-                Logger.LogWarning($"{success}, Evaluation: {evalutation}, Expected: {expected}, node ran: {depth}");
+
+                var standardexpected = Math.Round(expected * 6, 0, MidpointRounding.ToEven);
+                var standardevalutation = Math.Round(evalutation * 6, 0, MidpointRounding.ToEven);
+                var diff = Math.Abs(standardexpected - standardevalutation);
+                diffs.Add(1.0 - (double)diff / 6);
+                var depthstr = depth < 10 ? "0" + depth.ToString() : depth.ToString();
+
+                Logger.LogWarning($"Diff: {diff} Evaluation: {standardevalutation}, Expected: {standardexpected}, node ran: {depthstr}, success: {standardevalutation == standardexpected}");
 
                 i++;
             }
 
             var rate = ((double)succeed.Count(s => s) / succeed.Count) * 100;
-            Logger.LogWarning($"\n{rate} % ");
+            var precision = ((double) diffs.Sum() / diffs.Count()) * 100;
+            Logger.LogWarning($"\nSuccess {rate} % ");
+            Logger.LogWarning($"\nPrecision {precision} % ");
 
             return rate;
         }
@@ -264,13 +274,6 @@ namespace Log635Lab03_Winform
 
             return newDataset;
         }
-
-        struct ColumnUse
-        {
-            public string Column { get; set; }
-            public int Use { get; set; }
-        }
-        private List<ColumnUse> _columnUses = new List<ColumnUse>();
 
         private TreeNode CreateNode(List<EvaluatedColumnPredicate> evaluatedParent, DrugDataset dataset)
         {
